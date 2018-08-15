@@ -1,11 +1,51 @@
 
-#
+# First replace unicode characters with plain english
+PATTERN = "ϕ"
+REPLACEMENT = "phi"
+PATTERN = "θ"
+REPLACEMENT = "theta"
 
+# Remove comments
+PATTERN = "^[\s]*[#][^\n]*[\n]"
+REPLAEMENT = "\n"
+PATTERN = "[\s]*[#][^\n]*[\n]"
+REPLAEMENT = "\n"
 
-# Replace struct with type
-PATTERN = "[a-z_ @]*struct \b([A-Za-z]*)[A-Za-z<:{},\ 0-9]*"
+# Remove quotes
+PATTERN = # "["]+[^"]*["]+"
 REPLACEMENT = ""
 
+# Remove whitespace
+PATTERN = "^[\s]*[\n]"
+REPLAEMENT = ""
+
+# Clean up struct names
+PATTERN = "[a-z_ @]*struct \b([\w]*)[\w<:{},# 0-9]*[\n]"
+REPLACEMENT = "class $1:\n\tdef __init__(self;):\n"
+
+# Remove end
+PATTERN = "::\b([\w\s0-9{}]*[^\n^:]*)[\n]end"
+REPLACEMENT = "::$1\n"
+
+# Change data members
+PATTERN = "[\n][\s]*\b([\w_]+)::\b([\w0-9{},]*)[^\n]*[#]*\b([^\n]*)"
+REPLACEMENT = "\n\t\tself.$1"
+
+# Remove everything that's not a class, def, self, or function
+PATTERN = "^((?!self)(?!def)(?!class)(?!function).)*$"
+REPLACEMENT = ""
+
+# Remove whitespace again
+PATTERN = "^[\s]*[\n]"
+REPLAEMENT = ""
+
+# Add whitespace between class definitions
+PATTERN = "^\b(class.*$)"
+REPLACEMENT = "\n$1"
+
+# Rename functions
+PATTERN = "^function\b(.*$)"
+REPLACEMENT = "\ndef$1:\n\tpass"
 
 #
 PATTERN = "__init__\(self[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[\n\s,]*\b([.a-zA-Z_]*)[,]*[.a-zA-Z_,]*\):"
