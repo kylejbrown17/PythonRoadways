@@ -74,3 +74,33 @@ REPLACEMENT = ",$1=None"
 # Add assignment operator to each data member in constructor
 PATTERN = "self\.\b([\w_]*)"
 REPLACEMENT = "self.$1 = $1"
+
+# Create __add__ method
+PATTERN = "\b(\w*):\n\t\b(def __init__\(self,)\b(.*\)):\n\t\t\b((self.\w* = \w*\n\t\t)*self.\w* = \w*\n)"
+REPLACEMENT = "$1:\n\t$2$3:\n\t\t$4\n\tdef __add__(self,other):\n\t\treturn $1($3\n"
+# Create __truediv__ method
+PATTERN = "def __add__\b(\(self,other\):\s*.*)"
+REPLACEMENT = "def __add__$1\n\n\tdef __truediv__$1"
+# Create __mul__ method
+PATTERN = "def __add__\b(\(self,other\):\s*.*)"
+REPLACEMENT = "def __add__$1\n\n\tdef __mul__$1"
+# Create __sub__ method
+PATTERN = "def __add__\b(\(self,other\):\s*.*)"
+REPLACEMENT = "def __add__$1\n\n\tdef __sub__$1"
+
+# Fix arguments to __add__ method
+PATTERN = "\b(def __add__\(self,other\):)\s*\b(\w*[^\(])\b(.*)\b([,|\(]{1})\b(\w+)=None"
+REPLACEMENT = "$1\n\t\t$2$3$4$5=self.$5+other.$5"
+# Fix arguments to __sub__ method
+PATTERN = "\b(def __sub__\(self,other\):)\s*\b(\w*[^\(])\b(.*)\b([,|\(]{1})\b(\w+)=None"
+REPLACEMENT = "$1\n\t\t$2$3$4$5=self.$5-other.$5"
+# Fix arguments to __mul__ method
+PATTERN = "\b(def __mul__\(self,other\):)\s*\b(\w*[^\(])\b(.*)\b([,|\(]{1})\b(\w+)=None"
+REPLACEMENT = "$1\n\t\t$2$3$4$5=self.$5*other"
+# Fix arguments to __truediv__ method
+PATTERN = "\b(def __truediv__\(self,other\):)\s*\b(\w*[^\(])\b(.*)\b([,|\(]{1})\b(\w+)=None"
+REPLACEMENT = "$1\n\t\t$2$3$4$5=self.$5/other"
+
+# Fix id arguments
+PATTERN = "id=[^,]*"
+PATTERN = "id=None"
