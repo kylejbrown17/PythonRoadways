@@ -240,7 +240,7 @@ def GetSplitIndex(spline_curve, divider, BUFFER_DISTANCE=5.0):
                 split_idx = idx+1
                 d1 = ProjectionError(divider.pts, spline_curve.pts[:,idx])
                 d2 = ProjectionError(divider.pts, spline_curve.pts[:,idx+1])
-                ratio = d1 / (d2 + d1)
+                ratio = np.sum(d1 / (d2 + d1))
                 break
             else:
                 idx = None
